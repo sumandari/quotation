@@ -1,0 +1,11 @@
+.pyc
+__pycache__
+
+# db
+db.sqlite3
+
+# virtual env
+venv/
+
+# pycharm config
+.idea
