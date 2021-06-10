@@ -93,7 +93,8 @@ class Quotation(models.Model):
     )
     vehicle = models.ForeignKey(
         Vehicle,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        null=False
     )
 
 
