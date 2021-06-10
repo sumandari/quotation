@@ -19,13 +19,20 @@ class QuotationAdmin(admin.ModelAdmin):
     """Quotation admin model."""
 
     list_display = (
-        'number', 'vehicle',
+        'number',
+        'get_customer', 'vehicle',
         'windscreen', 'passanger_liability', 'others',
         'price', 'created_at'
     )
-    fields = ('number', 'vehicle',
-              'windscreen', 'passanger_liability', 'others',
-              'price')
+    fields = (
+        'number', 'vehicle',
+        'windscreen', 'passanger_liability', 'others',
+        'price'
+    )
+    search_fields = ['vehicle__customer__email', 'number', 'vehicle']
+
+    def get_customer(self, obj):
+        return obj.vehicle.customer
 
 
 class VehicleAdmin(admin.ModelAdmin):
