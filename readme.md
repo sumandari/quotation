@@ -14,10 +14,16 @@ python3 -m venv venv
 ```python
 pip install -r requirements.txt
 ```
+- Change directory to app
+```
+cd app
+```
+
 - Run migration
 ```python
 python manage.py migrate
 ```
+
 - Run development server
 ```python
 python manage.py runserver 8008
