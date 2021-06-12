@@ -44,8 +44,16 @@ We are using `django.core.mail.backends.console.EmailBackend` to send the email.
 This is not a production ready code.
   
 ### Demo  
+  
 ![quot](https://user-images.githubusercontent.com/40058076/121774858-f5027f00-cbb6-11eb-8d5e-ff78c33fde5a.gif)
  
+### Calculator
+
+![image](https://user-images.githubusercontent.com/40058076/121778222-a5c54a00-cbc8-11eb-91a6-3a36d5efba88.png)
+  
+### PDF on web
+![image](https://user-images.githubusercontent.com/40058076/121778259-c2fa1880-cbc8-11eb-81a3-563c44b1867b.png)
+  
 ### Email on console
 
 ![image](https://user-images.githubusercontent.com/40058076/121774896-2ed38580-cbb7-11eb-8be7-d020a37068ed.png)
