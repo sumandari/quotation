@@ -1,56 +1,6 @@
+from datetime import datetime
 from django.db import models
 from django.core.validators import MinValueValidator
-
-
-class Customer(models.Model):
-    name = models.CharField(
-        help_text="Customer's name.",
-        max_length=64,
-        null=False,
-    )
-    email = models.EmailField(
-        help_text="Customer's email.",
-        max_length=254,
-        null=False,
-        unique=True,
-    )
-    mobile_number = models.CharField(
-        help_text="Customer's mobile number.",
-        max_length=20,
-        null=True
-    )
-
-    def __str__(self):
-        return self.name
-
-
-class Vehicle(models.Model):
-    customer = models.ForeignKey(
-        Customer,
-        on_delete=models.CASCADE
-    )
-    year_make = models.IntegerField(
-        help_text="Vehicle year make.",
-    )
-    model = models.CharField(
-        help_text='Vehicle model.',
-        max_length=100
-    )
-    number = models.CharField(
-        help_text='Vehicle No.',
-        max_length=20,
-        unique=True,
-    )
-    price = models.DecimalField(
-        help_text='Vehicle price in RM',
-        max_digits=12,
-        decimal_places=2,
-        default=100000.00,
-        validators=[MinValueValidator(30000.00)]
-    )
-
-    def __str__(self):
-        return f'{self.number}: {self.model} {self.year_make}'
 
 
 class Quotation(models.Model):
@@ -69,32 +19,65 @@ class Quotation(models.Model):
         auto_now_add=True
     )
 
+    # customer
+    name = models.CharField(
+        help_text="Customer's name.",
+        max_length=64,
+        null=False,
+    )
+    email = models.EmailField(
+        help_text="Customer's email.",
+        max_length=254,
+        null=False,
+    )
+    mobile_number = models.CharField(
+        help_text="Customer's mobile number.",
+        max_length=20,
+        null=True
+    )
+
+    # vehicle
+    vehicle_year = models.IntegerField(
+        help_text="Vehicle year make.",
+    )
+    vehicle_model = models.CharField(
+        help_text='Vehicle model.',
+        max_length=100
+    )
+    vehicle_number = models.CharField(
+        help_text='Vehicle No.',
+        max_length=20,
+    )
+    vehicle_price = models.DecimalField(
+        help_text='Vehicle price in RM',
+        max_digits=12,
+        decimal_places=2,
+        default=100000.00,
+        validators=[MinValueValidator(30000.00)]
+    )
+
+    #  coverage
     YES_NO_CHOICES = [
         ('yes', 'Yes'),
         ('no', 'No')
     ]
-    windscreen = models.CharField(
+    cov_windscreen = models.CharField(
         help_text='Windscreen coverage',
         max_length=3,
         choices=YES_NO_CHOICES,
         default='no'
     )
-    passanger_liability = models.CharField(
+    cov_passanger_liability = models.CharField(
         help_text='Passanger Liability coverage',
         max_length=3,
         choices=YES_NO_CHOICES,
         default='no'
     )
-    others = models.CharField(
+    cov_others = models.CharField(
         help_text='Flood, Windstorm, Landslide or Subsidence coverage',
         max_length=3,
         choices=YES_NO_CHOICES,
         default='no'
-    )
-    vehicle = models.ForeignKey(
-        Vehicle,
-        on_delete=models.CASCADE,
-        null=False
     )
 
 

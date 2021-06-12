@@ -1,0 +1,82 @@
+{% extends 'base.html' %}{% load humanize %}
+
+
+{% block head %}
+  <style>
+    {# https://stackoverflow.com/a/21261303   #}
+    dl.inline-flex {
+      display: flex;
+      flex-flow: row;
+      flex-wrap: wrap;
+      width: 300px;      /* set the container width*/
+      overflow: visible;
+    }
+    dl.inline-flex dt {
+      flex: 0 0 50%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    dl.inline-flex dd {
+      flex:0 0 50%;
+      margin-left: auto;
+      text-align: left;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  </style>
+{% endblock head %}
+
+{% block content %}
+  <h3>Quotation No.: {{ quotation.number }}</h3>
+
+  <dl class="inline-flex">
+    <dt>Name</dt>
+    <dd>{{ quotation.name }}</dd>
+
+    <dt>Email</dt>
+    <dd>{{ quotation.email }}</dd>
+
+    <dt>Mobile Phone</dt>
+    <dd>{{ quotation.mobile_number }}</dd>
+  </dl>
+
+  <dl class="inline-flex">
+    <dt>Number</dt>
+    <dd>{{ quotation.vehicle_number }}</dd>
+
+    <dt>Year Make</dt>
+    <dd>{{ quotation.vehicle_year }}</dd>
+
+    <dt>Model</dt>
+    <dd>{{ quotation.vehicle_model }}</dd>
+
+    <dt>Price</dt>
+    <dd>RM {{ quotation.vehicle_price|intcomma }}</dd>
+  </dl>
+
+  <table class="table">
+    <tbody>
+      <tr>
+        <td>Basic Price</td>
+        <td>....</td>
+      </tr>
+      <tr>
+        <td>Windscreen coverage</td>
+        <td>{{ quotation.cov_windscreen }}</td>
+      </tr>
+      <tr>
+        <td>Passanger Liability coverage</td>
+        <td>{{ quotation.cov_passanger_liability }}</td>
+      </tr>
+      <tr>
+        <td>Flood, Windstorm, Landslide or Subsidence coverage</td>
+        <td>{{ quotation.cov_others }}</td>
+      </tr>
+
+      <tr>
+        <th>Total</th>
+        <th>RM {{ quotation.price|intcomma }}</th>
+      </tr>
+    </tbody>
+  </table>
+{% endblock content %}

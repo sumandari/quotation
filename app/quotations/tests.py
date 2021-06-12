@@ -1,52 +1,35 @@
 from django.test import TestCase
 
-from .models import Customer, Vehicle, Quotation
+from .models import Quotation
 
 class TestQuotationModel(TestCase):
     """Test Quotation models."""
 
-    def setUp(self):
-        self.customer = Customer.objects.create(
-            name='Customer Test',
-            email='email@example.com',
-            mobile_number='123456789'
-        )
-        self.vehicle = Vehicle.objects.create(
-            customer=self.customer,
-            year_make=2000,
-            model='Savvy',
-            number='CAR12345',
-            price=123456.78
-        )
-
-    def test_str_customer_vehicle(self):
-        self.assertEqual(
-            self.customer.__str__(), 'Customer Test'
-        )
-        self.assertEqual(
-            self.vehicle.__str__(),
-            'CAR12345: Savvy 2000'
-        )
-
     def test_create_quotation_without_addon(self):
         quot = Quotation.objects.create(
-            vehicle=self.vehicle,
-            price=1234.56
+            price=1234.56,
+            name='Customer Test',
+            email='email@example.com',
+            mobile_number='123456789',
+            vehicle_year=2000,
+            vehicle_model='Savvy',
+            vehicle_number='CAR12345',
+            vehicle_price=123456.78,
         )
         self.assertEqual(
-            quot.vehicle.customer, self.customer
+            quot.name, 'Customer Test'
         )
         self.assertEqual(
-            quot.vehicle.year_make, 2000
+            quot.vehicle_year, 2000
         )
         self.assertEqual(
-            quot.windscreen, 'no'
+            quot.cov_windscreen, 'no'
         )
         self.assertEqual(
-            quot.passanger_liability, 'no'
+            quot.cov_passanger_liability, 'no'
         )
         self.assertEqual(
-            quot.others, 'no'
+            quot.cov_others, 'no'
         )
         self.assertEqual(
             quot.price, 1234.56
@@ -54,17 +37,23 @@ class TestQuotationModel(TestCase):
 
     def test_create_quotation_with_addon(self):
         quot = Quotation.objects.create(
-            vehicle=self.vehicle,
             price=1234.56,
-            windscreen='yes',
-            others='yes'
+            name='Customer Test',
+            email='email@example.com',
+            mobile_number='123456789',
+            vehicle_year=2000,
+            vehicle_model='Savvy',
+            vehicle_number='CAR12345',
+            vehicle_price=123456.78,
+            cov_windscreen='yes',
+            cov_others='yes'
         )
         self.assertEqual(
-            quot.windscreen, 'yes'
+            quot.cov_windscreen, 'yes'
         )
         self.assertEqual(
-            quot.passanger_liability, 'no'
+            quot.cov_passanger_liability, 'no'
         )
         self.assertEqual(
-            quot.others, 'yes'
+            quot.cov_others, 'yes'
         )
