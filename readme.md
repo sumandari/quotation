@@ -8,7 +8,7 @@ python3 -m venv venv
 ```
 - Activate your virtual environment
 ```python
-. venv/bin/Activate
+. venv/bin/activate
 ```
 - Install requirements
 ```python
@@ -35,7 +35,7 @@ password: agent
 You can change the add price on http://localhost:8008/quotations-admin/quotations/addonprice/
 
 ### Send PDF and render on web
-There's another function to send email other than api, you can send your request with url : http://localhost:8008/quotation/send_email/<id>/
+There's another function to send email other than api, you can send your request with url : `http://localhost:8008/quotation/send_email/<id>/`
 
 ### Email
 We are using `django.core.mail.backends.console.EmailBackend` to send the email. We don't setup prod email here.
