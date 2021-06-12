@@ -1,30 +1,28 @@
 from django import forms
 
-from .models import Quotation
-
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Column, Fieldset, Field, Layout, Row, Submit
 
 
+YES_NO_CHOICES = [
+    ('yes', 'Yes'),
+    ('no', 'No')
+]
 
-class QuotationForm(forms.ModelForm):
 
-    class Meta:
-        model = Quotation
-        fields = (
-            'name',
-            'email',
-            'mobile_number',
+class QuotationForm(forms.Form):
+    name = forms.CharField(label='Your name', max_length=64)
+    email = forms.EmailField(label='Your email')
+    mobile_number = forms.CharField(label='Your name', max_length=64)
 
-            'vehicle_year',
-            'vehicle_model',
-            'vehicle_number',
-            'vehicle_price',
+    vehicle_year = forms.IntegerField(label='Year make', min_value=1980)
+    vehicle_model = forms.CharField(label='Model', max_length=100)
+    vehicle_number = forms.CharField(label='Number', max_length=20)
+    vehicle_price = forms.FloatField(label='Vehicle price', initial=100000.00, min_value=30000.00)
 
-            'cov_windscreen',
-            'cov_passanger_liability',
-            'cov_others'
-        )
+    windscreen = forms.ChoiceField(choices=YES_NO_CHOICES)
+    passanger_liability = forms.ChoiceField(choices=YES_NO_CHOICES)
+    others = forms.ChoiceField(choices=YES_NO_CHOICES)
 
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
@@ -51,9 +49,9 @@ class QuotationForm(forms.ModelForm):
             Fieldset(
                 'Coverage',
                 Row(
-                    Column('cov_windscreen', css_class='form-group col-md-4'),
-                    Column('cov_passanger_liability', css_class='form-group col-md-4'),
-                    Column('cov_others', css_class='form-group col-md-4'),
+                    Column('windscreen', css_class='form-group col-md-4'),
+                    Column('passanger_liability', css_class='form-group col-md-4'),
+                    Column('others', css_class='form-group col-md-4'),
                 ),
                 css_class='mb-5'
             ),
@@ -62,7 +60,3 @@ class QuotationForm(forms.ModelForm):
         )
         self.helper.html5_required = False
         super(QuotationForm, self).__init__(*args, **kwargs)
-        # change label
-        self.fields['cov_windscreen'].label = 'Windscreen'
-        self.fields['cov_passanger_liability'].label = 'Passanger Liability'
-        self.fields['cov_others'].label = 'Flood, Windstorm, Landslide or Subsidence '

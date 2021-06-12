@@ -2,20 +2,42 @@ from decimal import Decimal
 from slugify import slugify
 
 from django.shortcuts import redirect
-from django.views.generic import CreateView, DetailView
+from django.views.generic import CreateView, DetailView, FormView
 from django.urls import reverse
 
 from .forms import QuotationForm
 from .models import AddOnPrice, Quotation
 
 
-class QuotationCreateView(CreateView):
-
+class QuotationFormView(FormView):
     template_name = 'quotations/upload_form.html'
     form_class = QuotationForm
+    model = Quotation
 
     def form_valid(self, form):
-        obj = form.save(commit=False)
+        quotation = self.model(
+            name=form.cleaned_data['name'],
+            email=form.cleaned_data['email'],
+            mobile_number=form.cleaned_data['mobile_number'],
+            vehicle_year=form.cleaned_data['vehicle_year'],
+            vehicle_model=form.cleaned_data['vehicle_model'],
+            vehicle_number=form.cleaned_data['vehicle_number'],
+            vehicle_price=form.cleaned_data['vehicle_price'],
+        )
+        addons = self.get_add_on()
+        addon_total = 0
+        if form.cleaned_data['windscreen'] == 'yes':
+            addon_total += addons[0]
+        if form.cleaned_data['passanger_liability'] == 'yes':
+            addon_total += addons[1]
+        if form.cleaned_data['others'] == 'yes':
+            addon_total += addons[2]
+
+        quotation.price = (Decimal(2/100) * Decimal(quotation.vehicle_price)) + Decimal(addon_total)
+        quotation.save()
+        return redirect(reverse('quotation_detail', args=(quotation.id,)))
+
+    def get_add_on(self):
         addon = AddOnPrice.objects.last()
         if not addon:
             addon_windscreen, addon_passanger_liability, addon_others = (0, 0, 0)
@@ -23,17 +45,7 @@ class QuotationCreateView(CreateView):
             addon_windscreen = addon.windscreen
             addon_passanger_liability = addon.passanger_liability
             addon_others = addon.others
-        addon_total = addon_windscreen + addon_passanger_liability + addon_others
-        obj.price = (Decimal(2/100) * obj.vehicle_price) + addon_total
-
-        # quotation numbering pattern
-        # - start from MI (Motor Insurance)
-        # - 10 first chars of user's name with unique email
-        # - number of user's submitted form
-        email_count = Quotation.objects.filter(email=obj.email).count()
-        obj.number = f'MI-{slugify(obj.name)[:10]}-{email_count + 1}'
-        obj.save()
-        return redirect(reverse('quotation_detail', args=(obj.id,)))
+        return addon_windscreen, addon_passanger_liability, addon_others
 
 
 class QuotationDetailView(DetailView):
@@ -41,4 +53,3 @@ class QuotationDetailView(DetailView):
     context_object_name = 'quotation'
     model = Quotation
     template_name = 'quotations/detail.html'
-
