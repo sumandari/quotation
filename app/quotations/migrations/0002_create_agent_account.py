@@ -17,9 +17,9 @@ def create_agent_account(apps, schema_editor):
 def create_add_on_price(apps, schema_editor):
     AddOnPrice = apps.get_model('quotations', 'AddOnPrice')
     AddOnPrice.objects.create(
-        windscreen=100.00,
-        passanger_liability=500.00,
-        others=300.00
+        windscreen=500.00,
+        passanger_liability=100.00,
+        others=0.00
     )
 
 class Migration(migrations.Migration):
