@@ -21,7 +21,7 @@ class QuotationForm(forms.Form):
     vehicle_price = forms.FloatField(label='Vehicle price', initial=100000.00, min_value=30000.00)
 
     windscreen = forms.ChoiceField(choices=YES_NO_CHOICES)
-    passanger_liability = forms.ChoiceField(choices=YES_NO_CHOICES)
+    passenger_liability = forms.ChoiceField(choices=YES_NO_CHOICES)
     others = forms.ChoiceField(choices=YES_NO_CHOICES)
 
     def __init__(self, *args, **kwargs):
@@ -50,7 +50,7 @@ class QuotationForm(forms.Form):
                 'Coverage',
                 Row(
                     Column('windscreen', css_class='form-group col-md-4'),
-                    Column('passanger_liability', css_class='form-group col-md-4'),
+                    Column('passenger_liability', css_class='form-group col-md-4'),
                     Column('others', css_class='form-group col-md-4'),
                 ),
                 css_class='mb-5'

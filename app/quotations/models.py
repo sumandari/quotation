@@ -57,27 +57,23 @@ class Quotation(models.Model):
     )
 
     #  coverage
-    YES_NO_CHOICES = [
-        ('yes', 'Yes'),
-        ('no', 'No')
-    ]
-    cov_windscreen = models.CharField(
-        help_text='Windscreen coverage',
-        max_length=3,
-        choices=YES_NO_CHOICES,
-        default='no'
+    cov_windscreen =models.DecimalField(
+        help_text='Windscreen coverage.',
+        max_digits=12,
+        decimal_places=2,
+        null=True
     )
-    cov_passanger_liability = models.CharField(
-        help_text='Passanger Liability coverage',
-        max_length=3,
-        choices=YES_NO_CHOICES,
-        default='no'
+    cov_passanger_liability = models.DecimalField(
+        help_text='Passanger Liability coverage.',
+        max_digits=12,
+        decimal_places=2,
+        null=True
     )
-    cov_others = models.CharField(
-        help_text='Flood, Windstorm, Landslide or Subsidence coverage',
-        max_length=3,
-        choices=YES_NO_CHOICES,
-        default='no'
+    cov_others = models.DecimalField(
+        help_text='Flood, Windstorm, Landslide or Subsidence coverage.',
+        max_digits=12,
+        decimal_places=2,
+        null=True
     )
 
 

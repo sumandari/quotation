@@ -2,80 +2,89 @@
 
 
 {% block head %}
-  <style>
-    {# https://stackoverflow.com/a/21261303   #}
-    dl.inline-flex {
-      display: flex;
-      flex-flow: row;
-      flex-wrap: wrap;
-      width: 300px;      /* set the container width*/
-      overflow: visible;
-    }
-    dl.inline-flex dt {
-      flex: 0 0 50%;
-      text-overflow: ellipsis;
-      overflow: hidden;
-    }
-    dl.inline-flex dd {
-      flex:0 0 50%;
-      margin-left: auto;
-      text-align: left;
-      text-overflow: ellipsis;
-      overflow: hidden;
-    }
-  </style>
 {% endblock head %}
 
 {% block content %}
-  <h3>Quotation No.: {{ quotation.number }}</h3>
+  <div class="mb-5 text-center">
+    <h1>Motor Insurance Calculator</h1>
+  </div>
 
-  <dl class="inline-flex">
-    <dt>Name</dt>
-    <dd>{{ quotation.name }}</dd>
+  <div class="row mb-5">
+    <div class="col-lg-6">
+      <h2>Customer Information</h2>
+      <table class="table table-bordered">
+        <tr>
+          <td>Name</td>
+          <td>{{ quotation.name }}</td>
+        </tr>
+        <tr>
+          <td>Email</td>
+          <td>{{ quotation.email }}</td>
+        </tr>
+        <tr>
+          <td>Mobile Phone</td>
+          <td>{{ quotation.mobile_number }}</td>
+        </tr>
+      </table>
+    </div>
 
-    <dt>Email</dt>
-    <dd>{{ quotation.email }}</dd>
+    <div class="col-lg-6">
+      <h2>Vehicle information</h2>
+      <table class="table table-bordered vehicle">
+        <tbody>
+          <tr>
+            <td>Vehicle model</td>
+            <td>{{ quotation.vehicle_model }}</td>
+          </tr>
+          <tr>
+            <td>Vehicle made</td>
+            <td>{{ quotation.vehicle_year }}</td>
+          </tr>
+          <tr>
+            <td>Vehicle Number</td>
+            <td>{{ quotation.vehicle_number }}</td>
+          </tr>
+          <tr>
+            <td>Vehicle Price</td>
+            <td>RM {{ quotation.vehicle_price|intcomma }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-    <dt>Mobile Phone</dt>
-    <dd>{{ quotation.mobile_number }}</dd>
-  </dl>
+  </div>
 
-  <dl class="inline-flex">
-    <dt>Number</dt>
-    <dd>{{ quotation.vehicle_number }}</dd>
-
-    <dt>Year Make</dt>
-    <dd>{{ quotation.vehicle_year }}</dd>
-
-    <dt>Model</dt>
-    <dd>{{ quotation.vehicle_model }}</dd>
-
-    <dt>Price</dt>
-    <dd>RM {{ quotation.vehicle_price|intcomma }}</dd>
-  </dl>
-
-  <table class="table">
+  <h2>Insurance Price</h2>
+  <table class="table quotation">
     <tbody>
       <tr>
         <td>Basic Price</td>
-        <td>....</td>
+        <td class="text-right">RM {{ basic_price|intcomma }}</td>
       </tr>
+      {% if quotation.cov_windscreen %}
       <tr>
         <td>Windscreen coverage</td>
-        <td>{{ quotation.cov_windscreen }}</td>
+        <td class="text-right">
+          RM {{ quotation.cov_windscreen }}
+        </td>
       </tr>
+      {% endif %}
+      {% if quotation.cov_passanger_liability %}
       <tr>
         <td>Passanger Liability coverage</td>
-        <td>{{ quotation.cov_passanger_liability }}</td>
+        <td <td class="text-right">>RM {{ quotation.cov_passanger_liability }}</td>
       </tr>
+      {% endif %}
+      {% if quotation.cov_others %}
       <tr>
         <td>Flood, Windstorm, Landslide or Subsidence coverage</td>
-        <td>{{ quotation.cov_others }}</td>
+        <td class="text-right">RM {{ quotation.cov_others }}</td>
       </tr>
+      {% endif %}
 
-      <tr>
+      <tr class="table-active">
         <th>Total</th>
-        <th>RM {{ quotation.price|intcomma }}</th>
+        <th class="text-right">RM {{ quotation.price|intcomma }}</th>
       </tr>
     </tbody>
   </table>
