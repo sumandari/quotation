@@ -20,5 +20,6 @@ urlpatterns = [
     path('quotations-admin/', admin.site.urls),
 
     # app
-    path('', include('quotations.urls'))
+    path('', include('quotations.urls')),
+    path('', include('api.urls')),
 ]

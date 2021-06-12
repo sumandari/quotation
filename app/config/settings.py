@@ -41,9 +41,11 @@ INSTALLED_APPS = [
 
     # 3rd party
     'crispy_forms',
+    'rest_framework',
 
     # app
     'quotations',
+    'api',
 ]
 
 MIDDLEWARE = [

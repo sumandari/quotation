@@ -2,4 +2,6 @@ django
 django-crispy-forms==1.9.2
 django-weasyprint
 
+djangorestframework
+
 python-slugify
