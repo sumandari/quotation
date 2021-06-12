@@ -13,7 +13,7 @@ YES_NO_CHOICES = [
 class QuotationForm(forms.Form):
     name = forms.CharField(label='Your name', max_length=64)
     email = forms.EmailField(label='Your email')
-    mobile_number = forms.CharField(label='Your name', max_length=64)
+    mobile_number = forms.CharField(label='Your mobile number', max_length=64)
 
     vehicle_year = forms.IntegerField(label='Year make', min_value=1980)
     vehicle_model = forms.CharField(label='Model', max_length=100)

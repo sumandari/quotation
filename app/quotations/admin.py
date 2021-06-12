@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from .models import AddOnPrice, Quotation
+from .views import send_quotation
 
 
 @admin.register(AddOnPrice)
@@ -8,7 +9,6 @@ class AddOnPriceAdmin(admin.ModelAdmin):
     """Coverage admin model."""
     list_display = ('windscreen', 'passanger_liability', 'others')
     fields = ('windscreen', 'passanger_liability', 'others')
-
 
 
 @admin.register(Quotation)
@@ -41,7 +41,7 @@ class QuotationAdmin(admin.ModelAdmin):
 
     @admin.action(description="Send to user’s email")
     def send_email(self, request, queryset):
-        # TODO
-        # send to user
+        template = 'quotations/pdf.html'
         for q in queryset:
-            print(f'sending quotation {q.number} to {q.email}')
+            send_quotation(q, template)
+            print(f'sending quotation {q.number} to {q.email} via admin action')

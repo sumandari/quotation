@@ -1,9 +1,13 @@
 from decimal import Decimal
 from slugify import slugify
+from weasyprint import HTML
 
-from django.core.mail import send_mail
-from django.shortcuts import redirect
+from django.http import Http404, HttpResponse
+from django.core.mail import send_mail, EmailMessage
+from django.forms.models import model_to_dict
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import CreateView, DetailView, FormView
+from django.template.loader import render_to_string
 from django.urls import reverse
 
 from .forms import QuotationForm
@@ -75,12 +79,39 @@ class QuotationDetailView(DetailView):
         return context
 
 
-def send_quotation(request, **kwargs):
-    send_mail(
-        'Subject here',
-        'Here is the message.',
-        'from@example.com',
-        ['to@example.com'],
-        fail_silently=False,
-    )
+class QuotationSendEmailPDFView(QuotationDetailView):
+    template_name = 'quotations/pdf.html'
 
+    def render_to_response(self, context, **response_kwargs):
+        response = super(QuotationSendEmailPDFView, self).render_to_response(context, **response_kwargs)
+        response.render()
+        pdf_response = HttpResponse(content_type='application/pdf')
+        pdf_response['Content-Disposition'] = 'filename={}.pdf'.format(self.object.number)
+        html_object = HTML(
+            string=response.content,
+            base_url='file://',
+        )
+        html_object.write_pdf(
+            pdf_response,
+            stylesheets=['https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css']
+        )
+
+        # send email
+        send_quotation(self.object, self.template_name)
+        return pdf_response
+
+
+def send_quotation(obj, template):
+    ctx = model_to_dict(obj)
+    pdf = HTML(string=render_to_string(template, ctx)).write_pdf()
+    email = EmailMessage(
+        'Hello',
+        'Body goes here',
+        'from@example.com',
+        [obj.email],
+        headers={'Message-ID': 'foo'},
+    )
+    email.attach(f'{obj.number}.pdf', pdf, 'application/pdf')
+    email.content_subtype = 'pdf'  # Main content is now text/html
+    email.encoding = 'us-ascii'
+    email.send()

@@ -14,6 +14,14 @@ def create_agent_account(apps, schema_editor):
     agent.save()
 
 
+def create_add_on_price(apps, schema_editor):
+    AddOnPrice = apps.get_model('quotations', 'AddOnPrice')
+    AddOnPrice.objects.create(
+        windscreen=100.00,
+        passanger_liability=500.00,
+        others=300.00
+    )
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -21,5 +29,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(create_agent_account, migrations.RunPython.noop)
+        migrations.RunPython(create_agent_account, migrations.RunPython.noop),
+        migrations.RunPython(create_add_on_price, migrations.RunPython.noop)
     ]

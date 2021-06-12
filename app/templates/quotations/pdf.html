@@ -2,11 +2,31 @@
 
 
 {% block head %}
+  <style>
+  body{font-family: 'Helvetica', sans-serif; }
+  </style>
 {% endblock head %}
 
 {% block content %}
   <div class="mb-5 text-center">
-    <h1>Motor Insurance Calculator</h1>
+    <h1>Motor Insurance Quotation</h1>
+  </div>
+
+  <div>
+    <table class="table table-bordered">
+      <tr>
+        <td>Quotation Number</td>
+        <td>{{ quotation.number }}</td>
+      </tr>
+      <tr>
+        <td>Date</td>
+        <td>{{ quotation.created_at|date:"d M Y" }}</td>
+      </tr>
+      <tr>
+        <td>Mobile Phone</td>
+        <td>{{ quotation.mobile_number }}</td>
+      </tr>
+    </table>
   </div>
 
   <div class="row mb-5">
@@ -88,8 +108,4 @@
       </tr>
     </tbody>
   </table>
-
-  <div>
-    <a href="{% url 'quotation_pdf' pk=quotation.id %}" class="btn btn-primary">Send To Email</a>
-  </div>
 {% endblock content %}
