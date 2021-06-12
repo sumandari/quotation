@@ -105,13 +105,13 @@ def send_quotation(obj, template):
     ctx = model_to_dict(obj)
     pdf = HTML(string=render_to_string(template, ctx)).write_pdf()
     email = EmailMessage(
-        'Hello',
-        'Body goes here',
+        'Motor Insurance Quotation',
+        'Thank you for your inquiry. Please find the quotation attached.',
         'from@example.com',
         [obj.email],
         headers={'Message-ID': 'foo'},
     )
     email.attach(f'{obj.number}.pdf', pdf, 'application/pdf')
-    email.content_subtype = 'pdf'  # Main content is now text/html
+    email.content_subtype = 'pdf'
     email.encoding = 'us-ascii'
     email.send()

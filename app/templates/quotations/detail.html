@@ -89,7 +89,28 @@
     </tbody>
   </table>
 
-  <div>
-    <a href="{% url 'quotation_pdf' pk=quotation.id %}" class="btn btn-primary">Send To Email</a>
+  <div class="mt-5 text-right">
+    <button onclick="sendEmail()" class="btn btn-primary">Send To Email</button>
   </div>
+
 {% endblock content %}
+
+
+{% block script %}
+  <script>
+    function sendEmail(){
+      console.log('klik');
+      $.ajax({
+        url: "{% url 'api_email' pk=quotation.id %}",
+        success: function(result){
+          console.log('email sent!')
+        },
+        error: function(request, status, error){
+          console.log(`Send email failed!`)
+        }
+      })
+    }
+
+
+  </script>
+{% endblock script %}
